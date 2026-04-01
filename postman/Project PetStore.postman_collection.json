@@ -9,41 +9,231 @@
   "item": [
     {
       "name": "TC-006 (Realizar login)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "// Validação obrigatória de Status Code (Caminho Feliz)\r",
+              "pm.test(\"TC-006 - Validar se o login foi realizado com sucesso (Status 200)\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "// Validação do corpo da resposta\r",
+              "pm.test(\"Validar se a resposta contém a mensagem de sucesso e o token\", function () {\r",
+              "    var jsonData = pm.response.json();\r",
+              "    \r",
+              "    // Verifica se a mensagem contém \"logged in user session\"\r",
+              "    pm.expect(jsonData.message).to.contains(\"logged in user session\");\r",
+              "    \r",
+              "    // Garante que o retorno não está vazio\r",
+              "    pm.expect(jsonData.message).to.not.be.null;\r",
+              "});\r",
+              "\r",
+              "// Validação de tempo de resposta (Boa prática de Qualidade)\r",
+              "pm.test(\"Validar se o tempo de resposta é menor que 500ms\", function () {\r",
+              "    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
       "request": {
         "method": "GET",
-        "header": []
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/user/login?username={{validUsername}}&password={{validPassword}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "user",
+            "login"
+          ],
+          "query": [
+            {
+              "key": "username",
+              "value": "{{validUsername}}",
+              "type": "text"
+            },
+            {
+              "key": "password",
+              "value": "{{validPassword}}",
+              "type": "text"
+            }
+          ]
+        }
       },
       "response": []
     },
     {
       "name": "TC-007 (Buscar usuário por nome)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"TC-007 - Status code é 200 ao buscar usuário existente\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Validar se o username retornado coincide com a busca\", function () {\r",
+              "    var jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData.username).to.eql(pm.environment.get(\"validUsername\"));\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
       "request": {
         "method": "GET",
-        "header": []
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/user/{{validUsername}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "user",
+            "{{validUsername}}"
+          ]
+        }
       },
       "response": []
     },
     {
       "name": "TC-008 (Criar pedido de compra)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"TC-008 - Pedido criado com sucesso (Status 200)\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Validar se o status do pedido é 'placed'\", function () {\r",
+              "    var jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData.status).to.eql(\"placed\");\r",
+              "});\r",
+              "\r",
+              "// Salva o ID do pedido para o próximo teste (independência)\r",
+              "pm.environment.set(\"orderId\", pm.response.json().id);"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
       "request": {
-        "method": "GET",
-        "header": []
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"id\": 10,\r\n  \"petId\": {{petIdAtivo}},\r\n  \"quantity\": 1,\r\n  \"shipDate\": \"2026-03-31T21:00:00.000Z\",\r\n  \"status\": \"placed\",\r\n  \"complete\": true\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/store/order",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "store",
+            "order"
+          ]
+        }
       },
       "response": []
     },
     {
       "name": "TC-009 (Buscar pedido por ID)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"TC-009 - Status code é 200 ao buscar pedido existente\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Validar integridade dos dados do pedido\", function () {\r",
+              "    var jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData.id).to.eql(pm.environment.get(\"orderId\"));\r",
+              "    pm.expect(jsonData).to.have.property(\"quantity\");\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
       "request": {
         "method": "GET",
-        "header": []
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/store/order/{{orderId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "store",
+            "order",
+            "{{orderId}}"
+          ]
+        }
       },
       "response": []
     },
     {
       "name": "TC-010 (Consultar inventário)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"TC-010 - Status code é 200 ao consultar inventário\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Validar se o inventário retorna um objeto populado\", function () {\r",
+              "    var jsonData = pm.response.json();\r",
+              "    pm.expect(jsonData).to.be.an(\"object\");\r",
+              "    // Verifica se existe pelo menos um pet 'available' no contador\r",
+              "    pm.expect(jsonData).to.have.property(\"available\");\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
       "request": {
         "method": "GET",
-        "header": []
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/store/inventory",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "store",
+            "inventory"
+          ]
+        }
       },
       "response": []
     }
