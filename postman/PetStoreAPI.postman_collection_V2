@@ -1,0 +1,514 @@
+{
+  "info": {
+    "_postman_id": "fabd97fa-4085-4e4d-8fbd-5e54d6ad3677",
+    "name": "PetStoreAPI",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "53618350",
+    "_collection_link": "https://go.postman.co/collection/53618350-fabd97fa-4085-4e4d-8fbd-5e54d6ad3677?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Testes Inválidos",
+      "item": [
+        {
+          "name": "TC-011 - Buscar pet com ID inválido",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// TC-011 - Validar status de erro\r",
+                  "pm.test(\"Deve retornar erro para ID inválido\", function () {\r",
+                  "    pm.response.to.have.status(404);\r",
+                  "});\r",
+                  "\r",
+                  "// Validar se existe mensagem de erro\r",
+                  "pm.test(\"Deve conter mensagem de erro\", function () {\r",
+                  "    var jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.message).to.not.be.empty;\r",
+                  "});\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/pet/{{pet_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "pet",
+                "{{pet_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "TC-012 - Validando formato da resposta",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// TC-012 - Validação de contrato\r",
+                  "pm.test(\"Resposta deve conter estrutura padrão de erro\", function () {\r",
+                  "    var resposta = pm.response.json();\r",
+                  "    pm.expect(resposta).to.have.all.keys(\"code\", \"type\", \"message\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Campos devem ter tipos corretos\", function () {\r",
+                  "    var resposta = pm.response.json();\r",
+                  "    pm.expect(resposta.code).to.be.a(\"number\");\r",
+                  "    pm.expect(resposta.type).to.be.a(\"string\");\r",
+                  "    pm.expect(resposta.message).to.be.a(\"string\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Resposta não deve ser sucesso\", function () {\r",
+                  "    pm.expect(pm.response.code).to.not.equal(200);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"id\": \"dogs\",\r\n  \"name\": 12\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/pet/{{pet_category}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "pet",
+                "{{pet_category}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "TC-013 - Teste de segurança com entrada maliciosa",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// TC-013 - Teste de segurança\r",
+                  "\r",
+                  "pm.test(\"API não deve aceitar script malicioso\", function () {\r",
+                  "    pm.expect(pm.response.code).to.not.equal(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Deve retornar erro ou sanitizar entrada\", function () {\r",
+                  "    pm.expect(pm.response.code).to.be.above(399);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Resposta não deve refletir script diretamente\", function () {\r",
+                  "    var resposta = pm.response.text();\r",
+                  "    pm.expect(resposta).to.not.include(\"<script>\");\r",
+                  "});\r",
+                  "\r",
+                  "// pm.test(\"API aceita entrada potencialmente maliciosa (comportamento inseguro)\", function () {\r",
+                  "//     pm.expect(pm.response.code).to.equal(200);\r",
+                  "// });\r",
+                  "\r",
+                  "// pm.test(\"Resposta contém script não sanitizado (falha de segurança)\", function () {\r",
+                  "//     var resposta = pm.response.text();\r",
+                  "//     pm.expect(resposta).to.include(\"<script>\");\r",
+                  "// });"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"id\": 0,\r\n  \"name\": \"<script>alert('xss')</script>\",\r\n  \"status\": \"available\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/pet",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "pet"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "TC-014 - Validação de erro para body inválido",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// TC-014 - Body inválido com retorno em XML\r",
+                  "\r",
+                  "pm.test(\"API não deve aceitar body inválido\", function () {\r",
+                  "    pm.expect(pm.response.code).to.be.oneOf([415, 500]);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Resposta deve ser em XML\", function () {\r",
+                  "    pm.expect(pm.response.text()).to.include(\"<?xml\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Resposta deve conter tag de erro\", function () {\r",
+                  "    var resposta = pm.response.text();\r",
+                  "    pm.expect(resposta).to.include(\"<apiResponse>\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Resposta não deve ser vazia\", function () {\r",
+                  "    pm.expect(pm.response.text()).to.not.be.empty;\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"id\": \"gato\",\r\n  \"name\": 4321\r\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/pet",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "pet"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "TC-015 - Verificando método inválido",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// TC-015 - Método inválido + Header\r",
+                  "\r",
+                  "pm.test(\"Deve retornar erro de método inválido\", function () {\r",
+                  "    pm.expect(pm.response.code).to.be.oneOf([405, 415, 500]);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Não deve retornar sucesso\", function () {\r",
+                  "    pm.expect(pm.response.code).to.not.equal(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Resposta deve conter header Content-Type\", function () {\r",
+                  "    pm.response.to.have.header(\"Content-Type\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Resposta pode estar em XML\", function () {\r",
+                  "    pm.expect(pm.response.text()).to.include(\"<?xml\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{base_url}}/pet/{{pet_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "pet",
+                "{{pet_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "TC-016 - ID negativo",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// TC-016 - ID negativo\r",
+                  "\r",
+                  "pm.test(\"API deve retornar erro para ID negativo\", function () {\r",
+                  "    pm.expect(pm.response.code).to.be.oneOf([400, 404]);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Resposta não deve ser sucesso\", function () {\r",
+                  "    pm.expect(pm.response.code).to.not.equal(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Resposta deve conter mensagem de erro\", function () {\r",
+                  "    var resposta = pm.response.json();\r",
+                  "    pm.expect(resposta.message).to.not.be.empty;\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/pet/-1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "pet",
+                "-1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "TC-017 - JSON mal formatado",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// TC-017 - JSON mal formatado\r",
+                  "\r",
+                  "pm.test(\"API deve rejeitar JSON mal formatado\", function () {\r",
+                  "    pm.expect(pm.response.code).to.be.oneOf([400, 415, 500]);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Resposta não deve ser sucesso\", function () {\r",
+                  "    pm.expect(pm.response.code).to.not.equal(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Resposta deve conter mensagem de erro\", function () {\r",
+                  "    pm.expect(pm.response.text()).to.not.be.empty;\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"id\": 123,\r\n  \"name\": \"dog\",\r\n  \"status\": \"available\"",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/pet",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "pet"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "TC-018 - Header Accept inválido",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// TC-018 - Header Accept inválido\r",
+                  "\r",
+                  "pm.test(\"API deve lidar com Accept inválido\", function () {\r",
+                  "    pm.expect(pm.response.code).to.be.oneOf([200, 400, 406]);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Resposta não deve quebrar a API\", function () {\r",
+                  "    pm.expect(pm.response.text()).to.not.be.empty;\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Resposta deve conter Content-Type\", function () {\r",
+                  "    pm.response.to.have.header(\"Content-Type\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/invalid",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/pet/{{pet_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "pet",
+                "{{pet_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "TC-019 - Método HTTP inválido",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// TC-019 - Método HTTP inválido\r",
+                  "\r",
+                  "pm.test(\"API deve retornar erro para método inválido\", function () {\r",
+                  "    pm.expect(pm.response.code).to.be.oneOf([400, 404, 405, 500]);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Resposta não deve ser sucesso\", function () {\r",
+                  "    pm.expect(pm.response.code).to.not.equal(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Resposta deve conter alguma mensagem\", function () {\r",
+                  "    pm.expect(pm.response.text()).to.not.be.empty;\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/pet/{{pet_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "pet",
+                "{{pet_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "TC-020 - Tempo de resposta elevado",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// TC-020 - Tempo de resposta\r",
+                  "\r",
+                  "pm.test(\"Tempo de resposta deve ser menor que 2000ms\", function () {\r",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Resposta deve ser recebida\", function () {\r",
+                  "    pm.expect(pm.response.text()).to.not.be.empty;\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Status deve ser válido\", function () {\r",
+                  "    pm.expect(pm.response.code).to.be.oneOf([200, 404]);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/pet/{{pet_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "pet",
+                "{{pet_id}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
