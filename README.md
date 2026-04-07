@@ -5,7 +5,7 @@
 ![GitHub](https://img.shields.io/badge/GitHub-181717?logo=github&logoColor=white)
 ![JSON](https://img.shields.io/badge/JSON-000000?logo=json&logoColor=white)
 
-# 🐾 Petstore API Testing Suite - INATEL S07
+# 🐾 Petstore API Testing Suite
 
 Este projeto contém uma suíte de testes automatizados para a **Swagger Petstore API**, desenvolvido como parte da disciplina de **Qualidade e Gerência de Software** no INATEL. O foco principal é validar os fluxos de sucesso (Happy Path) e comportamentos de erro (Negative Path) utilizando **Postman** e **Newman**.
 
@@ -13,7 +13,7 @@ Este projeto contém uma suíte de testes automatizados para a **Swagger Petstor
 
 ## 👥 Equipe
 * **André Augusto** - [GitHub](https://github.com/andreaugust0)
-* **Arthur Rabelo** - [GitHub](https://github.com/arthurrabelo)
+* **Arthur Rabelo** - [GitHub](https://github.com/arthurrabeloo)
 * **Marcus Vinicius** - [GitHub](https://github.com/MarcusSouza02)
 * **Kaik Freitas** - [GitHub](https://github.com/kafreitas07)
 ---
