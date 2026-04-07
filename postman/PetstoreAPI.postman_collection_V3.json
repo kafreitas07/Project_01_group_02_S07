@@ -9,41 +9,249 @@
   "item": [
     {
       "name": "TC-001 - Criar um novo Pet",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", () => {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Pet criado corretamente\", () => {\r",
+              "    const res = pm.response.json();\r",
+              "    pm.expect(res.name).to.eql(\"PetArthur\");\r",
+              "});\r",
+              "const res = pm.response.json();\r",
+              "pm.environment.set(\"petId\", res.id);"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
       "request": {
-        "method": "GET",
-        "header": []
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"id\": {{petId}},\r\n  \"name\": \"PetArthur\",\r\n  \"status\": \"available\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/pet",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "pet"
+          ]
+        }
       },
       "response": []
     },
     {
       "name": "TC-002 - Buscar Pet por ID",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status 200\", () => {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"ID correto\", () => {\r",
+              "    const res = pm.response.json();\r",
+              "    pm.expect(res.id).to.eql(pm.environment.get(\"petId\"));\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Nome existe\", () => {\r",
+              "    const res = pm.response.json();\r",
+              "    pm.expect(res.name).to.exist;\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
       "request": {
         "method": "GET",
-        "header": []
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/pet/{{petId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "pet",
+            "{{petId}}"
+          ]
+        }
       },
       "response": []
     },
     {
       "name": "TC-003 - Atualizar dados de Pet",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status 200\", () => {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Nome atualizado\", () => {\r",
+              "    const res = pm.response.json();\r",
+              "    pm.expect(res.name).to.eql(\"PetArthurAtualizado\");\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Status atualizado\", () => {\r",
+              "    const res = pm.response.json();\r",
+              "    pm.expect(res.status).to.eql(\"sold\");\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
       "request": {
-        "method": "GET",
-        "header": []
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"id\": {{petId}},\r\n  \"name\": \"PetArthurAtualizado\",\r\n  \"status\": \"sold\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/pet",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "pet"
+          ]
+        }
       },
       "response": []
     },
     {
       "name": "TC-004 - Buscar Pets por Status",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status 200\", () => {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Retorna lista\", () => {\r",
+              "    const res = pm.response.json();\r",
+              "    pm.expect(res.length).to.be.above(0);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Resposta é array\", () => {\r",
+              "    const res = pm.response.json();\r",
+              "    pm.expect(res).to.be.an(\"array\");\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
       "request": {
         "method": "GET",
-        "header": []
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/pet/findByStatus?status=available",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "pet",
+            "findByStatus"
+          ],
+          "query": [
+            {
+              "key": "status",
+              "value": "available"
+            }
+          ]
+        }
       },
       "response": []
     },
     {
       "name": "TC-005 - Criar um Usuário",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status 200\", () => {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Usuário criado\", () => {\r",
+              "    const res = pm.response.json();\r",
+              "    pm.expect(res.message).to.exist;\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
       "request": {
-        "method": "GET",
-        "header": []
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"id\": {{userId}},\r\n  \"username\": \"arthur_user\",\r\n  \"firstName\": \"Arthur\",\r\n  \"lastName\": \"Rabelo\",\r\n  \"email\": \"arthur@email.com\",\r\n  \"password\": \"123456\",\r\n  \"phone\": \"999999999\",\r\n  \"userStatus\": 1\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/user",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "user"
+          ]
+        }
       },
       "response": []
     }
