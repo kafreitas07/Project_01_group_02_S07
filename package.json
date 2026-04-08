@@ -1,0 +1,15 @@
+{
+  "name": "project_01_group_02_s07",
+  "version": "1.0.0",
+  "description": "Suíte de testes automatizados - PetStore API",
+  "main": "index.js",
+  "scripts": {
+    "test": "newman run postman/Collection_postman.json -e postman/Environments_postman.json -r htmlextra"
+  },
+  "author": "André Augusto, Arthur Rabelo, Kaik Freitas, Marcus Vinícius",
+  "license": "ISC",
+  "devDependencies": {
+    "newman": "^6.1.0",
+    "newman-reporter-htmlextra": "^1.23.0"
+  }
+}
