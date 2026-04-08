@@ -18,6 +18,18 @@ Este projeto contém uma suíte de testes automatizados para a **Swagger Petstor
 * **Kaik Freitas** - [GitHub](https://github.com/kafreitas07)
 ---
 
+## 🤖 Uso de Inteligência Artificial
+
+Este projeto utilizou tecnologias de **Inteligência Artificial (IA)** como ferramenta de apoio e co-criação. O uso de modelos de linguagem avançados (como o Google Gemini) foi aplicado nas seguintes frentes:
+
+* **Geração de Scripts:** Auxílio na estruturação da lógica de testes em JavaScript dentro do ambiente Postman.
+* **Documentação:** Apoio na redação técnica e organização visual deste arquivo `README.md`.
+* **Planejamento de Testes:** Suporte na elaboração da estratégia e na definição dos Casos de Teste (TCs) baseados nos endpoints da API.
+
+> **Nota:** Todos os artefatos gerados por IA foram revisados, testados e validados pelos integrantes do grupo para garantir a precisão técnica e o cumprimento dos requisitos acadêmicos.
+
+---
+
 ## 🛠️ Tecnologias Utilizadas
 
 * [Postman](https://www.postman.com/) - Criação e design dos testes.
@@ -53,11 +65,11 @@ newman run postman/Project_PetStore.postman_collection.json -e postman/Environme
 ````
 
 ## 📊 Estrutura de Testes
-A suíte está organizada em 20 Casos de Teste (TC) seguindo o padrão de identificação única:
+A suíte está organizada em 21 Casos de Teste (TC) seguindo o padrão de identificação única:
 
 TC-001 a TC-010: Caminhos Felizes (Criação de Pet, Login de Usuário, Consulta de Pedidos, etc).
 
-TC-011 a TC-020: Dados Inválidos/Inoportunos (IDs inexistentes, entradas malformadas, deleção duplicada).
+TC-011 a TC-021: Dados Inválidos/Inoportunos (IDs inexistentes, entradas malformadas, deleção duplicada).
 
 Nota: Todos os testes utilizam variáveis de ambiente (baseUrl, petIdAtivo, etc) para garantir a independência dos testes e o uso de fixtures.
 
@@ -71,4 +83,7 @@ Nota: Todos os testes utilizam variáveis de ambiente (baseUrl, petIdAtivo, etc)
 ├── README.md                                     # Instruções do projeto
 └── package.json                                  # Manifesto do projeto
 ````
+
+
+
 
