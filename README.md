@@ -53,15 +53,20 @@ Antes de começar, você precisará ter instalado em sua máquina:
 ### 1. Clonar o repositório
 ```bash
 git clone https://github.com/kafreitas07/Project_01_group_02_S07.git
+cd Project_01_group_02_S07
 ````
 
 ### 2. Instalar dependências
 ````bash
-npm install -g newman newman-reporter-htmlextra
+npm install
 ````
-### 3. Rodas os testes e gerar o relatório
+### 3. Executar os testes
 ````bash
-newman run postman/Project_PetStore.postman_collection.json -e postman/Environments.postman_environment.json -r htmlextra
+npm test
+````
+### 4. Abrir relatório
+````bash
+npm run report
 ````
 
 ## 📊 Estrutura de Testes
@@ -75,13 +80,16 @@ Nota: Todos os testes utilizam variáveis de ambiente (baseUrl, petIdAtivo, etc)
 
 ## 📂 Organização do Repositório
 ````bash
-├── postman/
-│   ├── Project_PetStore.postman_collection.json  # Coleção de testes
-│   └── Environments.postman_environment.json     # Variáveis de ambiente
+Project_01_group_02_S07/
 ├── doc/
-│   └── Plano_de_Testes.pdf                       # Documentação teórica
-├── README.md                                     # Instruções do projeto
-└── package.json                                  # Manifesto do projeto
+│   └── Plano de Testes API Swagger Petstore.pdf
+├── postman/
+│   ├── Collection_postman.json
+│   └── Environments_postman.json
+├── .gitignore
+├── package.json
+├── package-lock.json
+└── README.md
 ````
 
 
