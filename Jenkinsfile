@@ -3,9 +3,9 @@ pipeline {
 
     options {
         timeout(time: 30, unit: 'MINUTES')
-        ansiColor('xterm')
         buildDiscarder(logRotator(numToKeepStr: '5', artifactNumToKeepStr: '5'))
         timestamps()
+        ansiColor('xterm')
         disableConcurrentBuilds()
     }
 
@@ -40,6 +40,7 @@ pipeline {
             steps {
                 echo 'Executando testes Postman com Newman...'
                 sh 'npm test'
+                
                 echo 'Gerando relatório de testes...'
                 sh 'npm run report'
             }
