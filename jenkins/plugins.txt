@@ -9,3 +9,4 @@ credentials-binding:latest
 plain-credentials:latest
 timestamper:latest
 build-timeout:latest
+ansicolor:latest
