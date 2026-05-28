@@ -32,7 +32,7 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 echo 'Instalando dependências npm...'
-                bat 'npm ci'
+                sh 'npm install'
             }
         }
 
