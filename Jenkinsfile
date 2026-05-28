@@ -3,6 +3,7 @@ pipeline {
 
     options {
         timeout(time: 30, unit: 'MINUTES')
+        ansiColor('xterm')
         buildDiscarder(logRotator(numToKeepStr: '5', artifactNumToKeepStr: '5'))
         timestamps()
         disableConcurrentBuilds()
@@ -31,7 +32,7 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 echo 'Instalando dependências npm...'
-                bat 'npm ci'
+                sh 'npm install'
             }
         }
 
