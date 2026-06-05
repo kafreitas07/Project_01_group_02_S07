@@ -4,10 +4,10 @@
   "description": "Suíte de testes automatizados - PetStore API",
   "main": "index.js",
   "scripts": {
-    "test": "newman run postman/Collection_postman.json -e postman/Environments_postman.json -r htmlextra",
+    "test":"docker exec s07-newman newman run /etc/newman/Collection_postman.json -e /etc/newman/Environments_postman.json -r htmlextra",
     "report": "explorer newman"
   },
-  "author": "André Augusto, Arthur Rabelo, Kaik Freitas, Marcus Vinícius",
+  "author": "André Augusto, Anna Clara Rennó, Arthur Rabelo, Dimitri Schul Kaik Freitas, Marcus Vinícius",
   "license": "ISC",
   "devDependencies": {
     "newman": "^6.1.0",
