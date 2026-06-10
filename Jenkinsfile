@@ -11,9 +11,6 @@ pipeline {
 
     environment {
         NOME_PIPELINE = 'S07 — Testes Automatizados PETSTORE'
-        EMAIL_DESTINO = credentials('EMAIL_DESTINO_VAR')
-        EMAIL_REMETENTE = credentials('EMAIL_REMETENTE_VAR')
-        EMAIL_SENHA = credentials('EMAIL_SENHA_VAR')
     }
 
     triggers {
@@ -50,7 +47,13 @@ pipeline {
         stage('Notification') {
             steps {
                 echo 'Enviando e-mail com script Node.js...'
-                sh 'node script-email.js'
+                withCredentials([
+                    string(credentialsId: 'EMAIL_DESTINO_VAR', variable: 'EMAIL_DESTINO'),
+                    string(credentialsId: 'EMAIL_REMETENTE_VAR', variable: 'EMAIL_REMETENTE'),
+                    string(credentialsId: 'EMAIL_SENHA_VAR', variable: 'EMAIL_SENHA')
+                ]) {
+                    sh 'node script-email.js'
+                }
             }
         }
     }
