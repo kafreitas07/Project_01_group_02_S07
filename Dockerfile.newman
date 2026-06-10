@@ -1,0 +1,11 @@
+FROM node:20-alpine
+
+RUN apk add --no-cache \
+    curl \
+    bash
+
+RUN npm install -g newman newman-reporter-htmlextra
+
+WORKDIR /etc/newman
+
+CMD ["tail", "-f", "/dev/null"]
