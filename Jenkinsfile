@@ -32,7 +32,7 @@ pipeline {
             }
         }
 
-        stage('Install Dependencies') {
+        stage('Build') {
             steps {
                 echo 'Instalando dependências npm...'
                 sh 'npm ci'
@@ -40,7 +40,7 @@ pipeline {
             }
         }
 
-        stage('Run Postman Tests') {
+        stage('Tests') {
             steps {
                 echo 'Executando testes Postman com Newman...'
                 sh 'npm test'
