@@ -11,9 +11,9 @@ pipeline {
 
     environment {
         NOME_PIPELINE = 'S07 — Testes Automatizados PETSTORE'
-        EMAIL_DESTINO = credentials('EMAIL_DESTINO_VAR')
-        EMAIL_REMETENTE = credentials('EMAIL_REMETENTE_VAR')
-        EMAIL_SENHA = credentials('EMAIL_SENHA_VAR')
+        EMAIL_DESTINO = "${env.EMAIL_DESTINO}"
+        EMAIL_REMETENTE = "${env.EMAIL_REMETENTE}"
+        EMAIL_SENHA = "${env.APP_PASSWORD}"
     }
 
     triggers {
@@ -42,15 +42,23 @@ pipeline {
 
         stage('Tests') {
             steps {
+                echo 'Limpando relatórios antigos...'
+                sh 'docker exec s07-newman rm -rf /etc/newman/newman || true'
                 echo 'Executando testes Postman com Newman...'
                 sh 'npm test'
+                echo 'Copiando artefatos de teste...'
+                sh 'docker cp s07-newman:/etc/newman/newman/. ./newman || true'
             }
         }
 
         stage('Notification') {
             steps {
-                echo 'Enviando e-mail com script Node.js...'
-                sh 'node script-email.js'
+                echo 'Enviando e-mail...'
+                script {
+                    env.STATUS_PIPELINE = "${currentBuild.currentResult}"
+                    env.DURACAO_PIPELINE = "${currentBuild.durationString}"
+                    sh 'node ./jenkins/notification/script-email.js'
+                }
             }
         }
     }
