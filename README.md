@@ -68,6 +68,14 @@ Toda a infraestrutura do projeto foi containerizada utilizando Docker e Docker C
 | Nginx         | Proxy reverso para acesso ao Jenkins |
 | Newman        | Execução dos testes automatizados    |
 
+### Imagem no Docker Hub
+
+A imagem do Jenkins (com Node.js, Docker CLI e os plugins do `jenkins/plugins.txt` já instalados via `Dockerfile.jenkins`) está publicada publicamente no Docker Hub:
+
+🔗 **[kaikfreitas/s07-jenkins](https://hub.docker.com/r/kaikfreitas/s07-jenkins)**
+
+Ela é referenciada diretamente no `docker-compose.yml` (`image: kaikfreitas/s07-jenkins:latest`) e baixada automaticamente ao rodar `docker compose up`.
+
 ### Arquitetura da Solução
 
 ```text
