@@ -39,6 +39,32 @@ Este projeto utilizou tecnologias de **Inteligência Artificial (IA)** como ferr
 
 > Todos os artefatos gerados por IA foram revisados, testados e validados pelos integrantes do grupo para garantir a precisão técnica e o cumprimento dos requisitos acadêmicos.
 
+### 💬 Exemplos de Prompts Utilizados
+
+<details>
+<summary>🐳 Containerização e Infraestrutura</summary>
+
+**Contexto:** Dúvida sobre o motivo do Jenkins Agent necessitar da instalação do Docker CLI internamente.
+> **Prompt:** *"Porque na imagem do agent temos que baixar o docker?"*
+
+</details>
+
+<details>
+<summary>💻 Pair Programming e Mentoria</summary>
+
+**Contexto:** Solicitação de refatoração de código com explicação técnica detalhada sobre a resolução de caminhos de arquivos relativos no Jenkins Agent.
+> **Prompt:** *"Refatore o script de e-mail para enviar feedbacks dinâmicos de sucesso/falha e explique por que os anexos dos relatórios do Newman não estavam sendo encontrados pelo script durante a execução da pipeline."*
+
+</details>
+
+<details>
+<summary>🌐 Proxy Reverso e Redirecionamento (Nginx)</summary>
+
+**Contexto:** Entendimento da necessidade arquitetural e benefícios práticos de se utilizar um proxy reverso para expor a interface do Jenkins.
+> **Prompt:** *"Pra que serve o nginx nesse projeto? Explique detalhadamente como o proxy reverso facilita o acesso local e como isso se aplica a ambientes de produção reais."*
+
+</details>
+
 ---
 
 ## 🛠️ Tecnologias Utilizadas
