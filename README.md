@@ -39,6 +39,32 @@ Este projeto utilizou tecnologias de **Inteligência Artificial (IA)** como ferr
 
 > Todos os artefatos gerados por IA foram revisados, testados e validados pelos integrantes do grupo para garantir a precisão técnica e o cumprimento dos requisitos acadêmicos.
 
+### 💬 Exemplos de Prompts Utilizados
+
+<details>
+<summary>🐳 Containerização e Infraestrutura</summary>
+
+**Contexto:** Dúvida sobre o motivo do Jenkins Agent necessitar da instalação do Docker CLI internamente.
+> **Prompt:** *"Porque na imagem do agent temos que baixar o docker?"*
+
+</details>
+
+<details>
+<summary>💻 Pair Programming e Mentoria</summary>
+
+**Contexto:** Solicitação de refatoração de código com explicação técnica detalhada sobre a resolução de caminhos de arquivos relativos no Jenkins Agent.
+> **Prompt:** *"Refatore o script de e-mail para enviar feedbacks dinâmicos de sucesso/falha e explique por que os anexos dos relatórios do Newman não estavam sendo encontrados pelo script durante a execução da pipeline."*
+
+</details>
+
+<details>
+<summary>🌐 Proxy Reverso e Redirecionamento (Nginx)</summary>
+
+**Contexto:** Entendimento da necessidade arquitetural e benefícios práticos de se utilizar um proxy reverso para expor a interface do Jenkins.
+> **Prompt:** *"Pra que serve o nginx nesse projeto? Explique detalhadamente como o proxy reverso facilita o acesso local e como isso se aplica a ambientes de produção reais."*
+
+</details>
+
 ---
 
 ## 🛠️ Tecnologias Utilizadas
@@ -78,28 +104,24 @@ Ela é referenciada diretamente no `docker-compose.yml` (`image: kaikfreitas/s07
 
 ### Arquitetura da Solução
 
-```text
-GitHub
-   │
-   ▼
-Jenkins
-   │
-   ▼
-Jenkins Agent
-   │
-   ▼
-Newman
-   │
-   ▼
-Relatórios e Notificações
-```
+<div align="center">
+  <table>
+    <tr>
+      <td>
+        <img src="docs/images/arquitetura.svg" alt="Arquitetura da Solução" width="1000">
+      </td>
+    </tr>
+  </table>
+</div>
+
+## 🚀 Como executar o projeto:
 
 ### Inicialização dos Containers
 
-Subir todos os serviços:
+Subir todos os serviços (com rebuild):
 
 ```bash
-docker compose up -d
+docker compose up -d --build
 ```
 
 Verificar containers em execução:
@@ -128,52 +150,17 @@ O projeto utiliza uma pipeline declarativa implementada no Jenkins para automati
 
 ### Fluxo da Pipeline
 
-```text
-Push no GitHub
-        │
-        ▼
-Checkout do Código
-        │
-        ▼
-Instalação das Dependências
-        │
-        ▼
-Execução dos Testes Newman
-        │
-        ▼
-Geração dos Relatórios
-        │
-        ▼
-Envio de Notificação por E-mail
-```
+<div align="center">
+  <table>
+    <tr>
+      <td>
+        <img src="docs/images/pipeline_fluxo.svg" alt="Fluxo da Pipeline" width="850">
+      </td>
+    </tr>
+  </table>
+</div>
 
-### Etapas Automatizadas
 
-#### Checkout
-
-Obtém a versão mais recente do projeto diretamente do GitHub.
-
-#### Instalação de Dependências
-
-Instala automaticamente todas as dependências necessárias para execução dos testes.
-
-#### Execução dos Testes
-
-Executa a coleção Postman através do Newman, validando os endpoints da Swagger Petstore API.
-
-#### Geração de Relatórios
-
-Após a execução são gerados relatórios contendo:
-
-* Casos executados;
-* Casos aprovados;
-* Casos reprovados;
-* Tempo de execução;
-* Evidências de falhas.
-
-#### Notificação
-
-Ao final da execução, uma notificação automática é enviada por e-mail contendo os resultados da pipeline.
 
 ### Integração Contínua
 
@@ -190,35 +177,6 @@ Antes de começar, você precisará ter instalado em sua máquina:
 
 ---
 
-## 🚀 Como Executar o Projeto
-
-### 1. Clonar o repositório
-
-```bash
-git clone https://github.com/kafreitas07/Project_01_group_02_S07.git
-cd Project_01_group_02_S07
-```
-
-### 2. Instalar dependências
-
-```bash
-npm install
-```
-
-### 3. Executar os testes
-
-```bash
-npm test
-```
-
-### 4. Abrir relatório
-
-```bash
-npm run report
-```
-
----
-
 ## 📊 Estrutura de Testes
 
 A suíte está organizada em 21 Casos de Teste (TC) seguindo o padrão de identificação única:
@@ -227,28 +185,3 @@ A suíte está organizada em 21 Casos de Teste (TC) seguindo o padrão de identi
 * TC-011 a TC-021: Caminhos Negativos (Negative Path).
 
 Todos os testes utilizam variáveis de ambiente para garantir independência entre execuções e facilitar a manutenção dos cenários.
-
----
-
-## 📂 Organização do Repositório
-
-```text
-Project_01_group_02_S07/
-├── doc/
-│   └── Plano de Testes API Swagger Petstore.pdf
-├── postman/
-│   ├── Collection_postman.json
-│   └── Environments_postman.json
-├── nginx/
-│   └── default.conf
-├── jenkins/
-│   └── plugins.txt
-├── Dockerfile.jenkins
-├── docker-compose.yml
-├── Jenkinsfile
-├── script-email.js
-├── package.json
-├── package-lock.json
-├── .gitignore
-└── README.md
-```
