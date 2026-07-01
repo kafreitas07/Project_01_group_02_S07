@@ -47,9 +47,14 @@ pipeline {
                 echo 'Limpando relatórios antigos...'
                 sh 'docker exec s07-newman rm -rf /etc/newman/newman || true'
                 echo 'Executando testes Postman com Newman...'
-                sh 'npm test'
-                echo 'Copiando artefatos de teste...'
-                sh 'docker cp s07-newman:/etc/newman/newman/. ./newman || true'
+                script {
+                    def testStatus = sh(script: 'npm test', returnStatus: true)
+                    echo 'Copiando artefatos de teste...'
+                    sh 'docker cp s07-newman:/etc/newman/newman/. ./newman || true'
+                    if (testStatus != 0) {
+                        unstable('Alguns testes falharam.')
+                    }
+                }
             }
         }
 
@@ -88,7 +93,7 @@ pipeline {
             echo 'O pipeline está INSTÁVEL - alguns testes ou a cobertura mínima falharam.'
         }
         always {
-            archiveArtifacts artifacts: 'pacote-testes.tar.gz, newman/**/*.html, newman/report.json, package.json, postman/*.json', allowEmptyArchive: true
+            archiveArtifacts artifacts: 'pacote-testes.tar.gz, newman/**/*.html, newman/report.json', allowEmptyArchive: true
             echo "Pipeline : ${env.NOME_PIPELINE}"
             echo "Build    : #${BUILD_NUMBER}"
             echo "Resultado: ${currentBuild.currentResult}"
